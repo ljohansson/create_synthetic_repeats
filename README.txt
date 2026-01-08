@@ -45,3 +45,7 @@ insert_synthetic_repeats_config.tsv
 #chr17_12345678_12345690_15.2 CATCATCATCATCATCATCATCAT  CATCAGTCATCATCATCATCATCAT
 #chr18_23456789_23456901_15.2 CATCATCATCATCATCATCATCAT  CATCATCATCATCATCAT
 #Here in the first sequence an insertion is included and in the second sequence an interruption is included. In the third sequence shortened allele is created
+
+#example outputs annotate_fastq_reads_with_str_coords step: *_annotation.tsv files
+
+#NOTE: There are still bugs in the replace script. The sequence is not replaced with the one in the config file. Part of the issue is that for - reads the sequence is reverse complemented. This is work in progress.
