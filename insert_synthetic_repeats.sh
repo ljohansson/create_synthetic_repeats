@@ -24,14 +24,14 @@ module load PythonPlus/3.10.4-GCCcore-11.3.0-v23.01.1
 ############################################
 # Configuration
 ############################################
-SCRIPTDIR="/groups/umcg-gdio/tmp02/projects/nanopore/STR_detection/synthetic_controls/scripts"
-ANALYSISDIR="/groups/umcg-gdio/tmp02/projects/nanopore/STR_detection/synthetic_controls/SCAXXX"
+SCRIPTDIR="/PATH/TO/nanopore/STR_detection/synthetic_controls/scripts"
+ANALYSISDIR="/PATH/TO/nanopore/STR_detection/synthetic_controls/v3_UMCGnr_161578_v3_validatie"
 CONFIG_TSV="$ANALYSISDIR/insert_synthetic_repeats_config.tsv"
-STRAGLRTSV="$ANALYSISDIR/vip_fam0_FBD12345_straglr_1.5.5_VIP_catalog_v1.5.0.tsv"
-ORIGINAL_FASTQ="$ANALYSISDIR/output/intermediates/out_seqtk.fastq.gz"
+STRAGLRTSV="$ANALYSISDIR/sample01_straglr_1.5.5_VIP_catalog_v1.5.0.tsv"
+ORIGINAL_FASTQ="/PATH/TO/nanopore/STR_detection/VIP_8.4.5/sample01/output/intermediates/out_seqtk.fastq.gz"
 REFERENCE="/apps/data/vip/resources/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna"
-CRAM="/groups/umcg-gdio/tmp02/projects/nanopore/SCA/SCAXXX/run02/output/intermediates/vip_fam0_FBD12345.cram"
-CRAI="/groups/umcg-gdio/tmp02/projects/nanopore/SCA/SCAXXX/run02/output/intermediates/vip_fam0_FBD12345.cram.crai"
+CRAM="/PATH/TO/nanopore/v3_UMCGnr_161578_v3_validatie/run01/results/intermediates/sample01.cram"
+CRAI="/PATH/TO/nanopore/v3_UMCGnr_161578_v3_validatie/run01/results/intermediates/sample01.cram.crai"
 OUTPUTDIR="$ANALYSISDIR/synthetic_annotate"
 
 mkdir -p "$OUTPUTDIR"
@@ -51,7 +51,7 @@ python3 "$SCRIPTDIR/split_fastq_by_straglr_allele_v1.1.py" \
 ############################################
 echo "Step 2: get start and end position and sequence in reads bases on straglr coordinates on alleles defined in config file"
 for ALLELE_FASTQ in "$OUTPUTDIR"/*.fastq.gz; do
-    python3 "$SCRIPTDIR/annotate_fastq_reads_with_str_coords.py" \
+    python3 "$SCRIPTDIR/annotate_fastq_reads_with_str_coords_v1.4.py" \
       --tsv "$STRAGLRTSV" \
       --fastq "$ALLELE_FASTQ" \
       --cram "$CRAM" \
@@ -79,11 +79,11 @@ while IFS=$'\t' read -r BASE_FASTQ ORIGINAL_SEQ NEW_SEQ; do
     [[ -z "$BASE_FASTQ" ]] && continue
 
     # filenames based on FASTQ name, not sequence
-    ALLELE_FASTQ="$OUTPUTDIR/${BASE_FASTQ}.fastq.gz"
+    ALLELE_FASTQ="$OUTPUTDIR/${BASE_FASTQ}"
     ALLELE_OUT="$OUTPUTDIR/${BASE_FASTQ}.synthetic.fastq.gz"
     LOG_TSV="$OUTPUTDIR/${BASE_FASTQ}.synthetic.log.tsv"
 
-    python3 $SCRIPTDIR/replace_str_sequence_in_fastq.py \
+    python3 $SCRIPTDIR/replace_str_sequence_in_fastq_v1.2.py \
       --fastq "$ALLELE_FASTQ" \
       --tsv "$ANNOTATION_TSV" \
       --replace-sequence "$NEW_SEQ" \
