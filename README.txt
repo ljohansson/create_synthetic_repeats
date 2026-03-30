@@ -49,3 +49,15 @@ insert_synthetic_repeats_config.tsv
 #example outputs annotate_fastq_reads_with_str_coords step: *_annotation.tsv files
 
 #NOTE: There are still bugs in the replace script. The sequence is not replaced with the one in the config file. Part of the issue is that for - reads the sequence is reverse complemented. This is work in progress.
+
+
+ALTERNATIVE WORKFLOW
+The aim of this alternative workflow is to collect the information form the Straglr (bcgsc 1.5.6) tsv file and obtain the read sequence of the repeat (captital letters) padded with 25 bp (small letters).
+In addition the observed length of the repeats is calculated and compared with the straglr estimation.
+Furthermore, a plot is generated with the Straglr counts per read (blue), the observed counts per read (yellow) and overlap (green). This enables easy detection of incorrectly merged clusters (here you will see consistent deviations from the black straglr allele length line). The output are *annotation.tsv files with this information.
+The last script creates *annotation.html files based on the *annotation.tsv files. The read sequence is presented in the first column and bases are colored (A green, C blue, G green, T red). Non-matching bases or units are colored grey to help identify interruptions and alternative repeat units.
+
+Workflow:
+split_fastq_by_straglr_allele_v1.1.py
+annotate_fastq_reads_with_str_coords_padded_count_RUC_plot.py
+annotation_to_colored.py
